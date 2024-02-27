@@ -1,12 +1,9 @@
-docker export -o /home/iman/mybusy.tar busy
----------------------------------------------
-in this step you should delete the current container
-docker rm -f $(docker ps --filter "name=bu*")
-
-------------------------------------------------
-docker import mybusy.tar busybox:v1
-----------------------------------------------
-docker run -itd busybox:v1 sh
--------------------------------------------------
-ansible-playbook -K -u iman backup.yml
--------------------------------------------------s
+  gather_facts: yes
+  become: yes  
+  tasks:
+   - name: the shell module
+     shell: |
+       docker export -o /home/iman/mybusy.tar busy
+       docker import mybusy.tar busybox:v1
+       docker rm -f $(docker ps --filter "name=bu*")
+       docker run -itd busybox:v1 sh
